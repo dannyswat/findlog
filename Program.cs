@@ -12,11 +12,11 @@ namespace findlog
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length < 2 || args.Length > 3)
+			if (args.Length < 2 || args.Length > 4)
 			{
 				Console.WriteLine(@"The parameters are unexpected.
 
-Usage: findlog [path] [pattern] [rowoffset:int?]");
+Usage: findlog [path] [pattern] [showname:(s|h)?] [rowoffset:int?]");
 				return;
 			}
 			string path = Path.GetDirectoryName(args[0]);
@@ -28,7 +28,14 @@ Usage: findlog [path] [pattern] [rowoffset:int?]");
 			}
 
 			Regex regex = new Regex(args[1]);
-			int offset = args.Length == 3 ? int.Parse(args[2]) : 0;
+			int offset = args.Length == 4 ? int.Parse(args[3]) : 0;
+			bool? showname = args.Length >= 3 ? (args[2] == "h" ? false : (args[2] == "s" ? true : default(bool?))) : true;
+
+			if (!showname.HasValue)
+			{
+				Console.WriteLine("Unexpected paramters [showname]: either 's' or 'h' to show or hide the file name");
+				return;
+			}
 
 			string fileSearch = Path.GetFileName(args[0]);
 
@@ -47,7 +54,7 @@ Usage: findlog [path] [pattern] [rowoffset:int?]");
 
 						if (offsetCounters.Count > 0 && offsetCounters.Peek() == lineCount)
 						{
-							Console.WriteLine(line);
+							Console.WriteLine((showname == true ? string.Format("{0} at line {1}: ", file.Name, lineCount + offset) : "") + line);
 							offsetCounters.Dequeue();
 						}
 
@@ -55,7 +62,7 @@ Usage: findlog [path] [pattern] [rowoffset:int?]");
 						{
 							if (offset == 0)
 							{
-								Console.WriteLine(line);
+								Console.WriteLine((showname == true ? string.Format("{0} at line {1}: ", file.Name, lineCount + offset + 1) : "") + line);
 							}
 							else if (offset > 0)
 							{
