@@ -28,7 +28,19 @@ Usage: findlog [path] [pattern] [showname:(s|h)?] [rowoffset:int?]");
 			}
 
 			Regex regex = new Regex(args[1]);
-			int offset = args.Length == 4 ? int.Parse(args[3]) : 0;
+
+			int offset;
+			if (args.Length == 4)
+			{
+				if (!int.TryParse(args[3], out offset))
+				{
+					Console.WriteLine("Unexpected paramters [rowoffset]: only integer is allowed");
+					return;
+				}
+			}
+			else 
+				offset = 0;
+
 			bool? showname = args.Length >= 3 ? (args[2] == "h" ? false : (args[2] == "s" ? true : default(bool?))) : true;
 
 			if (!showname.HasValue)
