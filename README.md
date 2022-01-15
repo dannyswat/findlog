@@ -1,10 +1,10 @@
 # findlog
-A window console utility to find text in text files by regular expression and to show the line before or after the matched line
+A simple window console utility to find text in text files by regular expression and to show the line before or after the matched line
 
 ## Usage: 
     findlog [path] [pattern] [showname:(s|h)?] [rowoffset:int?]
 
-## Example
+## Examples:
     findlog C:\log\*.txt "Error occurred" s 1
 
 It means find the phrase "Error occurred" all txt files in C:\log. The result will show the file name and 1 line after the matched line
