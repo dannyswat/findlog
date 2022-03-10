@@ -58,7 +58,8 @@ Usage: findlog [path] [pattern] [showname:(s|h)?] [rowoffset:int?]");
 				Queue<int> offsetCounters = new Queue<int>();
 				Queue<string> pastLines = new Queue<string>();
 				int lineCount = 0;
-				using (var reader = new StreamReader(file.FullName))
+				using (var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+				using (var reader = new StreamReader(fs, Encoding.UTF8))
 				{
 					while (!reader.EndOfStream)
 					{
