@@ -83,7 +83,7 @@ Usage: findlog [path] [pattern] [showname:(s|h)?] [rowoffset:int?]");
 							}
 							else // offset < 0
 							{
-								Console.WriteLine(pastLines.Peek());
+								Console.WriteLine((showname == true ? string.Format("{0} at line {1}: ", file.Name, lineCount + offset) : "") + pastLines.Peek());
 							}
 						}
 
